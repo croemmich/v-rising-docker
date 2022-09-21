@@ -42,10 +42,13 @@ By default, the following ports are used, however can be changed in `ServerHostS
 | 9876           | UDP  |
 | 9877           | UDP  |
 
+## TTY
+
+To ensure the server stops cleanly, make sure to allocate a virtual tty using the `-t` flag.
 
 ## Example
 ```terminal
-docker run -d --name='vrising-server' \
+docker run -d -t --name='vrising-server' \
 --net='bridge' \
 --restart=unless-stopped \
 -e TZ="America/Chicago" \
