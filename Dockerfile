@@ -56,4 +56,7 @@ WORKDIR /mnt/vrising/server
 
 USER ${STEAM_USER_ID}
 
+EXPOSE 9876/udp
+EXPOSE 9877/udp
+
 CMD ["/usr/local/bin/vrpm"]
