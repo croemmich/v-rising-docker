@@ -53,7 +53,7 @@ func main() {
 }
 
 func upstall() error {
-	cmd := exec.Command(steamcmdPath, "+force_install_dir", serverDir, "+login", "anonymous", "+app_update", appId, "validate", "+quit")
+	cmd := exec.Command(steamcmdPath, "+@sSteamCmdForcePlatformType", "windows", "+force_install_dir", serverDir, "+login", "anonymous", "+app_update", appId, "validate", "+quit")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
