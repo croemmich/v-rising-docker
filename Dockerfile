@@ -1,4 +1,4 @@
-FROM golang:1.20.4-bullseye as vrpm
+FROM golang:1.21.4-bullseye as vrpm
 COPY vrpm /build
 WORKDIR /build
 RUN CGO_ENABLED=0 go build -v -o vrpm && chmod +x vrpm
