@@ -60,7 +60,7 @@ func upstall() error {
 }
 
 func makeXvfbCommand() Command {
-	cmd := exec.CommandContext(context.Background(), xvfbPath, ":0", "-screen", "0", "1024x768x16")
+	cmd := exec.CommandContext(context.Background(), xvfbPath, ":0", "-screen", "0", "1024x768x16", "-nolisten", "tcp", "-nolisten", "unix")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.SysProcAttr = &syscall.SysProcAttr{

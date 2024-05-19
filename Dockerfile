@@ -1,9 +1,9 @@
-FROM golang:1.21.4-bullseye as vrpm
+FROM golang:1.22.3-bookworm as vrpm
 COPY vrpm /build
 WORKDIR /build
 RUN CGO_ENABLED=0 go build -v -o vrpm && chmod +x vrpm
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 LABEL maintainer="Chris Roemmich"
 VOLUME ["/mnt/vrising/server", "/mnt/vrising/persistent"]
 
@@ -36,16 +36,20 @@ RUN dpkg --add-architecture i386 && \
     ln -s /usr/games/steamcmd /usr/bin/steamcmd
 
 # Create a Steam user
-RUN addgroup --system --gid ${STEAM_GROUP_ID} steam && \
-    adduser --system --uid ${STEAM_USER_ID} --gid ${STEAM_GROUP_ID} \
-        --home /home/steam \
-        --shell /usr/sbin/nologin \
-        --disabled-password steam
+RUN groupadd --gid ${STEAM_GROUP_ID} steam && \
+    useradd --uid ${STEAM_USER_ID} --gid ${STEAM_GROUP_ID} \
+      --home-dir /home/steam \
+      --create-home \
+      --shell /usr/sbin/nologin \
+      steam
 ENV HOME /home/steam
 
 ## Install Wine and X-Server
-RUN apt-get update && \
-    apt-get install -y wine \
+RUN mkdir -pm755 /etc/apt/keyrings && \
+    wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key && \
+    wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/noble/winehq-noble.sources && \
+    apt-get update && \
+    apt-get install -y winehq-devel \
         xserver-xorg \
         xvfb && \
     rm -rf /var/lib/apt/lists/*
